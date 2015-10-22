@@ -1,6 +1,15 @@
 extends layout
 
 block content
+  div.loginSideBar
+      h2 USERNAME
+      p This will be where the username and trending will go
+
+      div.trending
+        h3 Trending
+        ul.trendingMinneapolis(ng-repeat="trending in trendingData")
+          li {{trending.name}}
+
   h1= title
   p this will be where ALL THE CONTENT GOES
   h2 {{mainContent.test}}
@@ -8,4 +17,12 @@ block content
   b
   h2 Username: {{username}}
   b
-  h3 Tweet: {{tweet}}
+
+  div.tweetList(ng-repeat="tweet in initialData")
+    div.singleTweet
+      b
+      p
+        img(src="{{tweet.user.profile_image_url}}")
+      p {{tweet.user.name}}
+      p {{tweet.text}}
+      p {{tweet.retweet_count}}

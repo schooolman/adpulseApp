@@ -10,33 +10,54 @@ var client = new Twitter({
 });
 
 var dataArray = [];
+var trending = [];
 
+//Empty route
 router.get('/', function(request, response, next){
     response.send('hitting advertising route');
     router.get()
 });
 
 
+//Sending the loaded tweets to the client side JS
 router.get('/loadtweets', function(request, response, next){
-    //response.send('going to get the tweeeeeeets');
-    response.send(dataArray[0]);
+    newSearch();
+    response.send(dataArray);
+});
 
 
-    //returns an initial query of advertising filtering for tweets with links
-    //client.get('/search/tweets', {q: 'advertising filter:links'}, function(error, tweets, response){
-    //    //console.log(tweets.statuses[0].text);
-    //    dataArray = tweets.statuses;
-    //    console.log(response);
-    //    console.log(dataArray);
-    //    for(var i = 0; i < dataArray.length; i++){
-    //        console.log(dataArray[i].user.name);
-    //        console.log(dataArray[i].text);
-    //    }
-    //});
+//This route will call the function to fetch the current trending twitter list.
+router.get('/trending', function(request, response, next){
+    trendingList();
 
+
+
+
+    response.send(trending);
+});
+
+
+
+    //Function that gets trending list
+    var trendingList = function(){
+        client.get('/trends/place', {id: '2452078'}, function(error, trends, response){
+            if (error) throw error;
+            trending = trends;
+            //console.log(trends);
+            //return trends;
+        });
+    };
+
+    //Function that gets popular tweets
+    var newSearch = function(){
+        client.get('/search/tweets', {q: 'advertising', count: '100', result_type: 'popular'}, function(error, tweets, response){
+            //console.log(tweets.statuses);
+            dataArray = tweets.statuses;
+        });
+    };
 
     //Get stream of tweets related to advertising
-    //client.stream('statuses/filter', {track: 'advertising'}, function(stream) {
+    //client.stream('statuses/filter', {track: 'advertising minneapolis'}, function(stream) {
     //    stream.on('data', function(tweet) {
     //        console.log(tweet.text);
     //    });
@@ -44,22 +65,6 @@ router.get('/loadtweets', function(request, response, next){
     //        throw error;
     //    });
     //});
-});
-
-client.get('/search/tweets', {q: 'advertising filter:links'}, function(error, tweets, response){
-    //console.log(tweets.statuses[0].text);
-    dataArray = tweets.statuses;
-    console.log(response);
-    console.log(dataArray);
-    for(var i = 0; i < dataArray.length; i++){
-        console.log(dataArray[i].user.name);
-        console.log(dataArray[i].text);
-    }
-});
-
-//Route to get initial search query from Twiter API with query term advertising
-
-
 
 
 module.exports = router;
