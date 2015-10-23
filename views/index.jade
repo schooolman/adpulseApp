@@ -2,6 +2,8 @@ extends layout
 
 block content
   div.loginSideBar
+
+
       h2 USERNAME
       p This will be where the username and trending will go
 
@@ -9,6 +11,10 @@ block content
         h3 Trending
         ul.trendingMinneapolis(ng-repeat="trending in trendingData")
           li {{trending.name}}
+
+  div.savedSideBar
+    h2 Saved List
+
 
   h1= title
   p this will be where ALL THE CONTENT GOES
@@ -21,8 +27,13 @@ block content
   div.tweetList(ng-repeat="tweet in initialData")
     div.singleTweet
       b
+        span.twitterHandle {{tweet.user.name}}
       p
-        img(src="{{tweet.user.profile_image_url}}")
-      p {{tweet.user.name}}
-      p {{tweet.text}}
+        img.profilePicture(src="{{tweet.user.profile_image_url}}")
+      p.tweetcontent {{tweet.text}}
+      a(href='{{tweet.entities.urls[0].expanded_url}}') Article Link
+      //p {{tweet.entities.media[0].expanded_url}}
+      //img(src='{{tweet.entities.media[0].media_url}}')
+
       p {{tweet.retweet_count}}
+    div(infinite-scroll='loadMoreTweets()' infinite-scroll-distance='3')

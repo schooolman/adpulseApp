@@ -1,4 +1,4 @@
-var app = angular.module('advertisingApp', []);
+var app = angular.module('advertisingApp', ['infinite-scroll']);
 
 app.controller('MainController', ['$scope', '$http', function($scope, $http){
 
@@ -7,12 +7,15 @@ app.controller('MainController', ['$scope', '$http', function($scope, $http){
     $scope.initialData = [];
     $scope.trendingData = [];
 
+
+
     $scope.loadTweets = function(){
         $http.get('/advertising/loadtweets').then(function(response){
             if(response.status !== 200){
                 throw new Error('Failed to get tasks');
             }
             $scope.initialData = response.data;
+            console.log($scope.initialData[1]);
         })
     };
 
@@ -25,8 +28,19 @@ app.controller('MainController', ['$scope', '$http', function($scope, $http){
         })
     };
 
+    $scope.loadMoreTweets = function(){
+        $http.get('/advertising/loadmoretweets').then(function(response){
+            if(response.status !== 200){
+                throw new Error('Failed to load more tweets');
+            }
+            //need to push new data into existing initialData Array
+            console.log(response.data);
+        })
+    };
+
     $scope.loadTrending();
     $scope.loadTweets();
-
+    console.log('check');
 }]);
+
 

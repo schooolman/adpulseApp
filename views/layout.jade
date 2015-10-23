@@ -3,7 +3,9 @@ html(ng-app="advertisingApp")
   head
     title= title
     link(rel='stylesheet', href='/stylesheets/style.css')
+    script(type='text/javascript', src='./javascripts/jquery.min.js')
     script(type='text/javascript', src='./javascripts/angular/angular.min.js')
+    script(type='text/javascript', src='./javascripts/ng-infinite-scroll.js')
     script(type='text/javascript', src='./client/public/javascripts/app.js')
 
   body(ng-controller="MainController as mainContent")
