@@ -1,16 +1,20 @@
 var express = require('express');
 var Twitter = require('twitter');
 var router = express.Router();
+var env = require('dotenv');
+
+env.load();
 
 var client = new Twitter({
-    consumer_key: '4CackWnYgZmtLa5mITlnwaPZL',
-    consumer_secret: 'pvk4CNwb3GcPQW5Fi6XWFHZtuyW0Kp2SlFs5YL6Wqa3WoUViQL',
-    access_token_key: '73168768-93958qkkunEfZNCX5td2jZuy2nDdf45J4lOph7YmN',
-    access_token_secret: 'U4YGlpT9uFbzkKD7u6wYd9jrYnTlcr1V9EdD1kFzXepVK'
+    consumer_key: process.env.consumer_key,
+    consumer_secret: process.env.consumer_secret,
+    access_token_key: process.env.access_token_key,
+    access_token_secret: process.env.access_token_secret
 });
 
 var dataArray = [];
 var trending = [];
+var twitter = [];
 
 //Empty route
 router.get('/', function(request, response, next){
@@ -29,10 +33,12 @@ router.get('/loadtweets', function(request, response, next){
 });
 
 router.get('/loadmoretweets', function(request, response, next){
-    client.get('search/tweets', {q: 'advertising filter:links', count: '10'}, function(error, tweets){
+    client.get('search/tweets', {q: 'advertising filter:links', count: '50'}, function(error, tweets){
         if(error) throw error;
-        var twitter = tweets.statuses;
-        response.send(twitter);
+        //twitter = tweets.statuses;
+        response.send(tweets.statuses);
+        //twitter = [];
+
     })
 });
 

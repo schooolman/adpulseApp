@@ -48,3 +48,16 @@ a {
 .tweetList {
   margin-left: 350px;
 }
+
+.spacer {
+  clear: both;
+}
+
+.closedSaved {
+  margin-right: -200px;
+}
+
+.closedLogin {
+  margin-left: -400px;
+}
+
