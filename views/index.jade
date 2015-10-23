@@ -15,33 +15,31 @@ block content
           li {{trending.name}}
 
   div.savedSideBar(ng-class='{closedSaved: hideSaved}')
-    h2 Saved List
+    div.fixRight
+      h2 Saved List
 
-
-  h1= title
-  p this will be where ALL THE CONTENT GOES
-  h2 {{mainContent.test}}
-  b
-  b
-  h2 Username: {{username}}
-  b
-
-  div(infinite-scroll='loadMoreTweets()' infinite-scroll-disabled='twitter.busy')
-
+  div.headerContent(ng-class="{menuShiftLeft: hideLogin}")
+    h1= title
+    p this will be where ALL THE CONTENT GOES
+    h2 {{mainContent.test}}
+    b
     p show hide saved menu
       input(type='checkbox' ng-model='hideSaved')
     p show hide login menu
       input(type='checkbox' ng-model='hideLogin')
 
+  div(infinite-scroll='loadMoreTweets()' infinite-scroll-disabled='twitter.busy')
 
-    div.tweetList(ng-repeat="tweet in initialData")
+
+
+    div.tweetList(ng-class="{menuShiftLeft: hideLogin}" ng-repeat="tweet in initialData")
       div.singleTweet
         b
           span.twitterHandle {{tweet.user.name}}
         p
           img.profilePicture(src="{{tweet.user.profile_image_url}}")
         p.tweetcontent {{tweet.text}}
-        a(href='{{tweet.entities.urls[0].expanded_url}}') Article Link
+        a(href='{{tweet.entities.urls[0].expanded_url}}') {{tweet.entities.urls[0].expanded_url}}
         //p {{tweet.entities.media[0].expanded_url}}
         //img(src='{{tweet.entities.media[0].media_url}}')
 
