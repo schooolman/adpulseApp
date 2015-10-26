@@ -6,10 +6,21 @@ block content
   div.loginSideBar(ng-class='{closedLogin: hideLogin}')
 
 
-      h2 USERNAME
-      p This will be where the username and trending will go
+    if (!user)
+        p not currently logged in!
+        p please login or register
+        br
+        a(href="/login") Login
+        br
+        a(href="/register") Register
+    if (user)
+        p You are currently logged in as #{user.username}
+        a(href="/logout") Logout
+    br
+    a(href="/auth/twitter") Login via Twitter
 
-      div.trending
+
+    div.trending
         h3 Trending
         ul.trendingMinneapolis(ng-repeat="trending in trendingData")
           li {{trending.name}}
