@@ -11,6 +11,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/register', function(req, res){
+  console.log('checking routes');
   res.render('register', {});
 });
 

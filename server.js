@@ -19,6 +19,41 @@ var session = require('express-session');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var advertising = require('./routes/advertising');
+var readinglist = require('./routes/readinglist');
+
+var currentUser = [];
+
+passport.use(new TwitterStrategy({
+      consumerKey: config.twitter.consumerKey,
+      consumerSecret: config.twitter.consumerSecret,
+      callbackURL: config.twitter.callbackURL
+    },
+    function(accessToken, refreshToken, profile, done) {
+        User.findOne({ oauthID: profile.id }, function(err, user) {
+            currentUser = profile;
+            if(err) { console.log(err); }
+            if (!err && user != null) {
+                done(null, user);
+            } else {
+                var user = new User({
+                    oauthID: profile.id,
+                    name: profile.displayName,
+                    displayName: profile.username,
+                    readlist: [{tweet: 'Save Articles Here', article: 'www.example.com'}],
+                    created: Date.now()
+                });
+                user.save(function(err) {
+                    if(err) {
+                        console.log(err);
+                    } else {
+                        console.log("saving user ...");
+                        done(null, user);
+                    }
+                });
+            }
+        });
+    }
+));
 
 // serialize and deserialize
 passport.serializeUser(function(user, done) {
@@ -27,18 +62,6 @@ passport.serializeUser(function(user, done) {
 passport.deserializeUser(function(obj, done) {
   done(null, obj);
 });
-
-passport.use(new TwitterStrategy({
-      consumerKey: config.twitter.consumerKey,
-      consumerSecret: config.twitter.consumerSecret,
-      callbackURL: config.twitter.callbackURL
-    },
-    function(accessToken, refreshToken, profile, done) {
-      process.nextTick(function () {
-        return done(null, profile);
-      });
-    }
-));
 
 // view engine setup
   app.set('views', path.join(__dirname, 'views'));
@@ -68,8 +91,59 @@ passport.use(new TwitterStrategy({
 app.use('/', routes);
 app.get('/ping', routes);
 app.get('/account', ensureAuthenticated, function(req, res){
-  res.render('account', {user: req.user});
+    User.findById(req.session.passport.user, function(err, user) {
+        if(err) {
+            console.log(err);
+        } else {
+            res.render('account', { user: req.user});
+            console.log('user variable = ', user);
+        }
+    });
 });
+
+
+
+app.get('/accountlist', function(req, res){
+    User.findOne({displayName: currentUser.username}, function(err, user) {
+        if(err) {
+            console.log('this is an error ', err);
+        } else {
+            //res.render('account', { user: req.user});
+            console.log('user variable = ', user);
+            console.log('this is currentUser ', currentUser);
+            res.send(user);
+        }
+    });
+});
+
+app.put('/addtweet', function(req, res){
+    console.log(req.body);
+
+    //User.update({displayName: currentUser.username},
+    //    {$push: { 'readlist': req.body}});
+
+    User.findOneAndUpdate({displayName: currentUser.username},
+    //    if(err) throw err;
+    //
+    //    console.log(user);
+    //    user.readlist = req.body;
+    //    user.save(function(err){
+    //        if(err) throw err;
+    //        res.send(user);
+    //    });
+    //    user.update({$push: {'readlist': req.body}});
+        {$push: {'readlist': req.body}},
+        function(err, doc){}
+    );
+    //console.log(currentUser);
+    //User.findByIdAndUpdate(
+    //    currentUser._id,
+    //);
+
+
+});
+
+
 
 app.get('/', function(req,res){
   res.render('login', { user: req.user});
@@ -87,11 +161,11 @@ app.get('/auth/twitter',
 app.get('/auth/twitter/callback',
     passport.authenticate('twitter', { failureRedirect: '/' }),
     function(req, res) {
-      res.redirect('/account');
+      res.redirect('/');
     });
 app.get('/logout', function(req, res){
     req.logout();
-    res.redirect('/');
+    res.redirect('/account');
 });
 
 
@@ -107,6 +181,7 @@ mongoose.connect('mongodb://localhost/adpulse_db');
 
 //app.use('/users', users);
 app.use('/advertising', advertising);
+app.use('/readinglist', readinglist);
 
 // passport config
 var Account = require('./models/account');
@@ -117,7 +192,9 @@ passport.deserializeUser(Account.deserializeUser());
 // create a user model
 var User = mongoose.model('User', {
     oauthID: Number,
-    name: String
+    name: String,
+    displayName: String,
+    readlist: [{tweet: String, article: String}]
 });
 
 // catch 404 and forward to error handler

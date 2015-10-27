@@ -14,7 +14,7 @@ block content
         br
         a(href="/register") Register
     if (user)
-        p You are currently logged in as #{user.username}
+        p You are currently logged in as #{user.name}
         a(href="/logout") Logout
     br
     a(href="/auth/twitter") Login via Twitter
@@ -28,6 +28,9 @@ block content
   div.savedSideBar(ng-class='{closedSaved: hideSaved}')
     div.fixRight
       h2 Saved List
+      div.savedList(ng-repeat="item in currentSaveList")
+          div.listitem
+              p {{item.tweet}}
 
   div.headerContent(ng-class="{menuShiftLeft: hideLogin}")
     h1= title
@@ -35,7 +38,7 @@ block content
     h2 {{mainContent.test}}
     b
     p show hide saved menu
-      input(type='checkbox' ng-model='hideSaved')
+      input(type='checkbox' ng-click='loadReadingList()' ng-model='hideSaved')
     p show hide login menu
       input(type='checkbox' ng-model='hideLogin')
 
@@ -53,8 +56,9 @@ block content
         a(href='{{tweet.entities.urls[0].expanded_url}}') {{tweet.entities.urls[0].expanded_url}}
         //p {{tweet.entities.media[0].expanded_url}}
         //img(src='{{tweet.entities.media[0].media_url}}')
-
+        button(ng-click='saveTweet($index)') save
         p {{tweet.retweet_count}}
+
     div.spacer
     //<div class="spacer" style="clear: both;"></div>
 
