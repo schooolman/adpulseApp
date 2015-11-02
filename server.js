@@ -1,4 +1,3 @@
-var fs = require('fs');
 var express = require('express');
 var path = require('path');
 var app = express();
@@ -23,6 +22,13 @@ var readinglist = require('./routes/readinglist');
 
 var currentUser = [];
 
+// uncomment after placing your favicon in /public
+//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(logger('dev'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(cookieParser());
+
 passport.use(new TwitterStrategy({
       consumerKey: config.twitter.consumerKey,
       consumerSecret: config.twitter.consumerSecret,
@@ -31,6 +37,7 @@ passport.use(new TwitterStrategy({
     function(accessToken, refreshToken, profile, done) {
         User.findOne({ oauthID: profile.id }, function(err, user) {
             currentUser = profile;
+            //console.log('username = ', profile._json.profile_image_url);
             if(err) { console.log(err); }
             if (!err && user != null) {
                 done(null, user);
@@ -40,6 +47,7 @@ passport.use(new TwitterStrategy({
                     name: profile.displayName,
                     displayName: profile.username,
                     readlist: [{tweet: 'Save Articles Here', article: 'www.example.com'}],
+                    userPic: profile._json.profile_image_url,
                     created: Date.now()
                 });
                 user.save(function(err) {
@@ -67,12 +75,7 @@ passport.deserializeUser(function(obj, done) {
   app.set('views', path.join(__dirname, 'views'));
   app.set('view engine', 'jade');
 
-// uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-  app.use(logger('dev'));
-  app.use(bodyParser.json());
-  app.use(bodyParser.urlencoded({extended: false}));
-  app.use(cookieParser());
+
     //app.use(methodOverride());
   app.use(require('express-session')({
     secret: 'keyboard cat',
@@ -104,6 +107,7 @@ app.get('/account', ensureAuthenticated, function(req, res){
 
 
 app.get('/accountlist', function(req, res){
+    console.log('checking /accountList .put serverside');
     User.findOne({displayName: currentUser.username}, function(err, user) {
         if(err) {
             console.log('this is an error ', err);
@@ -117,30 +121,23 @@ app.get('/accountlist', function(req, res){
 });
 
 app.put('/addtweet', function(req, res){
-    console.log(req.body);
-
-    //User.update({displayName: currentUser.username},
-    //    {$push: { 'readlist': req.body}});
-
+    //console.log(req.body);
+    console.log('checking /addtweet .put serverside');
     User.findOneAndUpdate({displayName: currentUser.username},
-    //    if(err) throw err;
-    //
-    //    console.log(user);
-    //    user.readlist = req.body;
-    //    user.save(function(err){
-    //        if(err) throw err;
-    //        res.send(user);
-    //    });
-    //    user.update({$push: {'readlist': req.body}});
         {$push: {'readlist': req.body}},
-        function(err, doc){}
+        function(err, doc){},
+        res.sendStatus(200)
     );
-    //console.log(currentUser);
-    //User.findByIdAndUpdate(
-    //    currentUser._id,
-    //);
+});
 
-
+app.put('/deletetweet', function(req, res){
+   //console.log('this is the request: ', req.body);
+    console.log('checking /deleteTweet .put serverside');
+    User.findOneAndUpdate({displayName: currentUser.username},
+        {$pull: {'readlist': req.body}},
+        function(err, doc){},
+        res.sendStatus(200)
+    );
 });
 
 
@@ -194,7 +191,9 @@ var User = mongoose.model('User', {
     oauthID: Number,
     name: String,
     displayName: String,
-    readlist: [{tweet: String, article: String}]
+    readlist: [{tweet: String, article: String}],
+    userPic: String
+
 });
 
 // catch 404 and forward to error handler

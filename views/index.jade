@@ -4,61 +4,59 @@ block content
 
 
   div.loginSideBar(ng-class='{closedLogin: hideLogin}')
+    img.menuButton(ng-click='slideLeft()' src='/images/menu_icon.png')
+
+    div.mainSideBarContent
+        if (!user)
+            div.emptyUser
+                img.blankUser(ng-show='hideData')(src='/images/blank_user.png')
+                p(ng-show='hideData') Click below to login with your twitter account and save articles to a reading list.
+                br.clearfix
+                a.loginButton(ng-show='hideData' ng-click='displayLoading()')(href="/auth/twitter") Twitter Login
+                img.loadingSpinner(ng-show='showLoading')(src='/images/ring-alt.svg')
+
+        if (user)
+            div.userContent
+                img.twitUser(src='#{user.userPic}')
+                h3(ng-show='hideData') @#{user.displayName}
+                br.clearfix
+                a.logoutButton(ng-show='hideData' href="/logout") Logout
+                br
 
 
-    if (!user)
-        p not currently logged in!
-        p please login or register
-        br
-        a(href="/login") Login
-        br
-        a(href="/register") Register
-    if (user)
-        p You are currently logged in as #{user.name}
-        a(href="/logout") Logout
-    br
-    a(href="/auth/twitter") Login via Twitter
-
-
-    div.trending
-        h3 Trending
-        ul.trendingMinneapolis(ng-repeat="trending in trendingData")
-          li {{trending.name}}
+        div.trending(ng-show='hideData')
+            h3 Trending
+            ul.trendingMinneapolis(ng-animate="'animate'" ng-repeat="trending in trendingData")
+              li {{trending.name}}
 
   div.savedSideBar(ng-class='{closedSaved: hideSaved}')
+    img.savedListButton(ng-click='openSavedBar()' ng-class='{adjustButton: savedMoved}' src='/images/article_button.png')
     div.fixRight
       h2 Saved List
-      div.savedList(ng-repeat="item in currentSaveList")
+      div.savedList(ng-animate="'animate'" ng-repeat="item in currentSaveList")
           div.listitem
-              p {{item.tweet}}
+              p.tweetListItem {{item.tweet}}
+              a.readArticle(href="http://www.{{item.article}}" target='_blank') Read!
+              a.removeListItem(ng-click='removeTweet($index)') Remove!
 
   div.headerContent(ng-class="{menuShiftLeft: hideLogin}")
     h1= title
-    p this will be where ALL THE CONTENT GOES
-    h2 {{mainContent.test}}
     b
-    p show hide saved menu
-      input(type='checkbox' ng-click='loadReadingList()' ng-model='hideSaved')
-    p show hide login menu
-      input(type='checkbox' ng-model='hideLogin')
 
-  div(infinite-scroll='loadMoreTweets()' infinite-scroll-disabled='twitter.busy')
+  div.mainTweetContent(ng-class="{menuShiftLeft: hideLogin, menuShiftRight: hideSaved}")
+          div.flexContainer(infinite-scroll='loadMoreTweets()')
 
 
+              div.tweetList(ng-class = "{'{{tweet.style}}': {{tweet.style}}}" ng-repeat="tweet in initialData")
 
-    div.tweetList(ng-class="{menuShiftLeft: hideLogin}" ng-repeat="tweet in initialData")
-      div.singleTweet
-        b
-          span.twitterHandle {{tweet.user.name}}
-        p
-          img.profilePicture(src="{{tweet.user.profile_image_url}}")
-        p.tweetcontent {{tweet.text}}
-        a(href='{{tweet.entities.urls[0].expanded_url}}') {{tweet.entities.urls[0].expanded_url}}
-        //p {{tweet.entities.media[0].expanded_url}}
-        //img(src='{{tweet.entities.media[0].media_url}}')
-        button(ng-click='saveTweet($index)') save
-        p {{tweet.retweet_count}}
-
-    div.spacer
-    //<div class="spacer" style="clear: both;"></div>
+                    h3.twitterHandle {{tweet.user.name}}
+                    div.baseTweet
+                        b
+                        p
+                          img.profilePicture(src="{{tweet.user.profile_image_url}}")
+                        p.tweetcontent {{tweet.text}}
+                        a.linkButton(href='{{tweet.entities.urls[0].expanded_url}}' target='_blank') Article
+                        img.mediaPic(src='{{tweet.entities.media[0].media_url}}')
+                        a.saveTweetButton(ng-click='saveTweet($index)') save
+         div.spacer
 

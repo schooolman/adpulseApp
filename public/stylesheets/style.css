@@ -1,95 +1,519 @@
 body {
-  /*padding: 50px;*/
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-  background-color: #1b212c;
-
-}
-
-a {
-  color: #00B7FF;
+  font: 18px "Economica", Helvetica, Arial, sans-serif;
+  background-color: #1d232d;
 }
 
 .loginSideBar {
-  width: 250px;
+  width: 170px;
   /*height: 100vh;*/
   border: 1px solid black;
   float: left;
-  margin: -30px 10px 0 -8px;
+  margin: -30px 10px 0 -10px;
   padding: 5px;
-  min-height: 100vh;
+  min-height: 100%;
   position: fixed;
-  background-color: #ffffff;
+  background-color: #b3b3b3;
+  transition: margin 500ms;
+
 }
 
 .headerContent {
-  margin-left: 264px;
+  margin-left: 180px;
+  background-image: url("../images/banner.png");
+  background-position-x: 100%;
+  background-repeat: no-repeat;
+}
+
+.menuButton {
+  margin: 20px 10px 0 0;
+  float: right;
+}
+
+.menuButton:hover {
+  cursor: pointer;
 }
 
 .mainTweetContent {
   position: absolute;
-  margin-left: 250px;
+  margin-left: 180px;
+  margin-right: 0;
   width: auto;
-  z-index: 10;
+  display: flex;
+  transition: margin 500ms;
+  /*z-index: 10;*/
+
 }
 
 .savedSideBar {
   width: 350px;
-  height: 100vh;
-  border: 1px solid black;
+  min-height: 100%;
+  max-height: 100%;
+  /*border: 1px solid black;*/
   float: right;
-  margin: -20px -425px 0 5px;
-  padding: 5px;
-  background-color: #ffffff;
-
+  margin: -20px -351px 0 200px;
+  /*padding: 5px;*/
+  background-color: #38B65E;
+  position: fixed;
+  right: 0;
+  transition: margin 500ms;
+  transition-timing-function: ease-in-out;
+  z-index: 100;
 }
 
-.singleTweet {
-  height: 175px;
-  width: 350px;
+.userContent {
+  margin-bottom: 10px;
+  margin-top: 100px;
+}
+
+.userContent h3{
+  display: block;
+  margin-top: 20px;
+}
+
+.twitUser {
+  float: left;
+  display: block;
+}
+
+.emptyUser {
+  margin-top: 100px;
+}
+
+.emptyUser p {
+  width: 80%;
+  margin: 10px auto;
+}
+
+.favTweet {
+  height: auto;
+  width: 600px;
   border: 1px solid black;
   padding: 5px;
   margin: 2px 2px 2px 2px;
   float: left;
-  background-color: #ffffff;
+  background-color: #53ff9d;
 }
 
 .headerContent {
   color: #ffffff;
 }
 
+.trending h3{
+  margin-left: 40px;
+}
+
+.trending {
+  padding-right: 30px;
+  margin-left: -20px;
+  margin-top: 30px
+}
+
 .trendingMinneapolis li{
-  font-size: 12px;
+  font-size: 16px;
+  list-style: none;
+}
+
+.trendingMinneapolis ul{
+  margin-right: 50px;
+  display: block;
+}
+
+.saveTweetButton {
+  height: 20px;
+  width: 70px;
+  margin-bottom: 10px;
+  text-decoration: none;
+  padding: 5px 5px 5px 15px;
+  border-radius: 0 0 0 5px;
+  text-align: center;
+  color: #FFFFFF;
+  font-size: 18px;
+  background: #1d232d;
+  float: right;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  border-bottom: 1px solid white;
+  border-left: 1px solid white;
+}
+
+.saveTweetButton:hover {
+  height: 20px;
+  cursor: pointer;
+  margin-bottom: 10px;
+  text-decoration: none;
+  padding: 5px 5px 5px 15px;
+  border-radius: 0 0 0 5px;
+  text-align: center;
+  color: #FFFFFF;
+  font-size: 18px;
+  background: #2b3947;
+  float: right;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  box-shadow: -1px 1px 1px #000000;
+}
+
+.saveTweetButton:active {
+  box-shadow: 0 0 0 #000000;
+}
+
+.linkButton {
+  height: 20px;
+  width: 70px;
+  margin-bottom: 45px;
+  text-decoration: none;
+  padding: 5px 5px 5px 15px;
+  border-radius: 5px 0 0 0;
+  text-align: center;
+  color: #FFFFFF;
+  font-size: 18px;
+  z-index: 10;
+  background: #38b65e;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  border-top: 1px solid white;
+  border-left: 1px solid white;
+}
+
+.linkButton:hover {
+  height: 20px;
+  cursor: pointer;
+  text-decoration: none;
+  padding: 5px 5px 5px 15px;
+  border-radius: 5px 0 0 0;
+  text-align: center;
+  color: #FFFFFF;
+  font-size: 18px;
+  background: #2e8342;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  box-shadow: -1px 1px 1px #000000;
+}
+
+.linkButton:active {
+  box-shadow: 0 0 0 #000000;
 }
 
 .profilePicture {
   float:left;
-  /*margin: 2px;*/
+  margin-left: 15px;
   padding-right: 15px;
 }
 
 .tweetList {
-  margin-left: 264px;
+  order: 0;
+  flex: 1 1 auto;
+  align-self: auto;
+  position: relative;
+  transition: margin 500ms;
+}
+
+.flexContainer {
+  height: auto;
+  max-height: 90%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-content: stretch;
+  align-items: stretch;
+  margin-right: 20px;
+}
+
+
+
+
+.twitterLogin {
+  height: 30px;
+  width: auto;
+}
+
+.twitterHandle {
+  margin: 10px;
+}
+
+.loadingSpinner{
+  height: 50px;
+  display: block;
+  margin: 20px auto;
+}
+
+.loginButton{
+  height: 20px;
+  width: 80%;
+  margin: 20px auto 0 auto;
+  text-decoration: none;
+  display: block;
+  padding: 5px;
+  text-align: center;
+  color: #FFFFFF;
+  font-size: 18px;
+  background: #58dbfa;
+  border: solid 1px #cae9fa;
+}
+
+.loginButton:hover{
+  height: 20px;
+  width: 80%;
+  margin: 20px auto 0 auto;
+  text-decoration: none;
+  padding: 5px;
+  text-align: center;
+  color: #ffffff;
+  font-size: 18px;
+  background: #ade4ff;
+  border-radius: 2px;
+}
+
+.featured {
+  background-color: #e7f6ff;
+  width: 402px;
+  min-height: 300px;
+  margin: 4px;
+  border-radius: 2px;
+}
+
+.featured img.mediaPic{
+  height: 150px;
+  width: auto;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  margin: 20px;
+  transition: height 500ms;
+}
+
+.featured img.mediaPic:hover{
+  height: 200px;
+  width: auto;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  margin: 20px;
+  z-index: 100;
+}
+
+.low {
+  background-color: #7cc7ff;
+  width: 300px;
+  /*min-width: 200px;*/
+  min-height: 200px;
+  margin: 4px;
+  border-radius: 2px;
+  /*order: 0;*/
+}
+
+.low img.mediaPic{
+  display: none;
 }
 
 .spacer {
   clear: both;
+  /*width: 100px;*/
+  /*height: 100px;*/
+  /*background-color: white ;*/
+}
+
+.favTweetList {
+  float: left;
+  margin-left: 264px;
 }
 
 .closedSaved {
   margin-right: -15px;
-  /*z-index: 100;*/
+  z-index: 100;
 }
 
 .closedLogin {
-  margin-left: -400px;
+  margin-left: -140px;
 }
 
 .menuShiftLeft {
   margin-left: 0;
+  padding-left: 55px;
+}
+
+.menuShiftRight {
+  padding-right: 340px;
 }
 
 .fixRight {
-  position: fixed;
-  z-index: 20;
+  height: 100vh;
+  overflow: scroll;
 }
+
+.blankUser {
+  margin: 30px auto 0 auto;
+  display: block;
+  height: 30%;
+  width: 30%;
+}
+
+.savedListButton {
+  float: right;
+  position: fixed;
+  margin-top: 7px;
+  right: 0;
+  z-index: 100;
+  height: 30px;
+  width: auto;
+  transition: margin 500ms;
+  background-color: #38B65E;
+  padding: 10px 40px 10px 10px;
+  border-radius: 20px 0 0 20px;
+  border-top: 1px solid white;
+  border-left: 1px solid white;
+  border-bottom: 1px solid white;
+  transition-timing-function: ease-in-out;
+}
+
+.savedListButton:hover {
+  /*background: #2e8342;*/
+  box-shadow: -1px 1px 1px #000000;
+  cursor: pointer;
+}
+
+
+
+.adjustButton {
+  margin-right: 335px;
+  margin-top: 7px;
+}
+
+.baseTweet {
+  margin-top: 10px;
+  padding: 8px;
+}
+
+.listitem {
+  background-color: #cae9fa;
+  padding: 5px;
+  margin: 5px 20px 5px 5px;
+  border: 1px solid white;
+  position: relative;
+}
+
+.readArticle{
+  height: 20px;
+  width: 70px;
+  margin: 5px;
+  text-decoration: none;
+  padding: 5px 5px 5px 5px;
+  /*border-radius: 5px 0 0 0;*/
+  text-align: center;
+  color: #FFFFFF;
+  font-size: 18px;
+  background: #38b65e;
+  border: 1px solid white;
+  left: 0;
+  bottom: 0;
+  position: absolute;
+}
+
+.readArticle:hover {
+  background: #287d3e;
+}
+
+.tweetListItem {
+  margin: 10px 10px 45px 5px;
+}
+
+.removeListItem {
+  height: 20px;
+  width: 70px;
+  /*margin-bottom: 45px;*/
+  text-decoration: none;
+  padding: 5px 5px 5px 5px;
+  margin: 5px;
+  /*border-radius: 5px 0 0 0;*/
+  text-align: center;
+  color: #FFFFFF;
+  font-size: 18px;
+  background: #f4ad5b;
+  right: 0;
+  bottom: 0;
+  border: 1px solid white;
+  position: absolute;
+}
+
+.removeListItem:hover {
+  cursor: pointer;
+  background: #c1844f;
+}
+
+.logoutButton{
+  height: 20px;
+  width: 80%;
+  margin: 20px auto 0 auto;
+  text-decoration: none;
+  display: block;
+  padding: 5px;
+  text-align: center;
+  color: #FFFFFF;
+  font-size: 18px;
+  background: #58dbfa;
+  border: solid 1px #cae9fa;
+}
+
+.logoutButton:hover{
+  height: 20px;
+  width: 80%;
+  margin: 20px auto 0 auto;
+  text-decoration: none;
+  padding: 5px;
+  text-align: center;
+  color: #ffffff;
+  font-size: 18px;
+  background: #ade4ff;
+  border-radius: 2px;
+}
+
+.clearfix:before,
+.clearfix:after {
+  content: "";
+  display: table;
+}
+
+.clearfix:after {
+  clear: both;
+}
+
+.clearfix {
+  zoom: 1; /* ie 6/7 */
+}
+
+
+.animate-enter,
+.animate-leave
+{
+  -webkit-transition: 900ms cubic-bezier(0.250, 0.100, 0.250, 1.000) all;
+  -moz-transition: 900ms cubic-bezier(0.250, 0.100, 0.250, 1.000) all;
+  -ms-transition: 900ms cubic-bezier(0.250, 0.100, 0.250, 1.000) all;
+  -o-transition: 900ms cubic-bezier(0.250, 0.100, 0.250, 1.000) all;
+  transition: 900ms cubic-bezier(0.250, 0.100, 0.250, 1.000) all;
+  position: relative;
+  display: block;
+  overflow: hidden;
+  text-overflow: clip;
+  white-space:nowrap;
+}
+
+.animate-leave.animate-leave-active,
+.animate-enter {
+  opacity: 0;
+  width: 0px;
+  height: 0px;
+}
+
+.animate-enter.animate-enter-active,
+.animate-leave {
+  opacity: 1;
+  width: 100%;
+  height: 100%;
+}
+
 
