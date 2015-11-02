@@ -35,10 +35,7 @@ router.get('/loadtweets', function(request, response, next){
 router.get('/loadmoretweets', function(request, response, next){
     client.get('search/tweets', {q: 'advertising filter:links', count: '50'}, function(error, tweets){
         if(error) throw error;
-        //twitter = tweets.statuses;
         response.send(tweets.statuses);
-        //twitter = [];
-
     })
 });
 
@@ -47,40 +44,15 @@ router.get('/loadmoretweets', function(request, response, next){
 router.get('/trending', function(request, response, next){
     client.get('/trends/place', {id: '2452078'}, function(error, trends){
         if (error) throw error;
-        //trending = trends;
         response.send(trends);
     });
 });
 
-
+    //currently an unused function, saving for later search query functionality
     var newSearch = function(){
         client.get('/search/tweets', {q: 'advertising', count: '100', result_type: 'popular'}, function(error, tweets, response){
-            //console.log(tweets.statuses);
             dataArray = tweets.statuses;
         });
     };
-
-    //Function that gets trending list
-    //var trendingList = function(){
-    //    client.get('/trends/place', {id: '2452078'}, function(error, trends, response){
-    //        if (error) throw error;
-    //        trending = trends;
-    //        console.log(trends);
-    //        return trends;
-        //});
-    //};
-
-    //Function that gets popular tweets
-
-    //Get stream of tweets related to advertising
-    //client.stream('statuses/filter', {track: 'advertising minneapolis'}, function(stream) {
-    //    stream.on('data', function(tweet) {
-    //        console.log(tweet.text);
-    //    });
-    //    stream.on('error', function(error) {
-    //        throw error;
-    //    });
-    //});
-
 
 module.exports = router;

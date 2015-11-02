@@ -48,10 +48,8 @@ body {
   width: 350px;
   min-height: 100%;
   max-height: 100%;
-  /*border: 1px solid black;*/
   float: right;
   margin: -20px -351px 0 200px;
-  /*padding: 5px;*/
   background-color: #38B65E;
   position: fixed;
   right: 0;
@@ -403,7 +401,6 @@ body {
   margin: 5px;
   text-decoration: none;
   padding: 5px 5px 5px 5px;
-  /*border-radius: 5px 0 0 0;*/
   text-align: center;
   color: #FFFFFF;
   font-size: 18px;
@@ -425,11 +422,9 @@ body {
 .removeListItem {
   height: 20px;
   width: 70px;
-  /*margin-bottom: 45px;*/
   text-decoration: none;
   padding: 5px 5px 5px 5px;
   margin: 5px;
-  /*border-radius: 5px 0 0 0;*/
   text-align: center;
   color: #FFFFFF;
   font-size: 18px;
