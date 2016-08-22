@@ -137,6 +137,7 @@ app.controller('MainController', ['$scope', '$http', function($scope, $http){
     //loads trending and popular advertising tweets on page load.
     $scope.loadTrending();
     $scope.loadTweets();
+    //$scope.loadTweets();
 
 }]);
 

@@ -88,8 +88,6 @@ app.controller('MainController', ['$scope', '$http', function($scope, $http){
                 $scope.initialData.push($scope.moreData[i]);
             }
             $scope.checkFavorite(response.data);
-            //need to push new data into existing initialData Array
-            //console.log(response.data);
         })
     };
 
@@ -111,9 +109,6 @@ app.controller('MainController', ['$scope', '$http', function($scope, $http){
         $scope.loadReadingList();
     };
 
-    $scope.loadTrending();
-    $scope.loadTweets();
-
 
     $scope.sendTweet = function(data){
         return $http.put('/addtweet', data).then(function(err, response){
@@ -130,19 +125,19 @@ app.controller('MainController', ['$scope', '$http', function($scope, $http){
 
     //Checking to see if the tweet has been favorited more than 30 times and pushing to seperate array
     $scope.checkFavorite = function(tweets){
-
         for(var i = 0; i < tweets.length; i++){
             if(tweets[i].favorite_count > 30 || tweets[i].retweet_count > 20){
                 tweets[i].style = 'featured';
-                //tweets[i].row = 'row';
             }else{
                 tweets[i].style = 'low';
-                //tweets[i].entities.media[0].media_url = null;
             }
         }
+    };
 
-    }
-
+    //loads trending and popular advertising tweets on page load.
+    $scope.loadTrending();
+    $scope.loadTweets();
+    //$scope.loadTweets();
 
 }]);
 

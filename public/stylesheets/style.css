@@ -37,6 +37,7 @@ body {
   position: absolute;
   margin-left: 180px;
   margin-right: 0;
+  height: auto;
   width: auto;
   display: flex;
   transition: margin 500ms;
